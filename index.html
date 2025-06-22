@@ -209,6 +209,12 @@
             right: 10px;
         }
 
+        .calculator-home-button {
+            position: absolute;
+            top: 360px;
+            left: 50px;
+        }
+
         .hired-button {
             position: absolute;
             bottom: 10px;
@@ -275,7 +281,7 @@
         .cash-slot {
             position: absolute;
             bottom: 170px;
-            right: 50px;
+            right: 250px;
             width: 100px;
             height: 20px;
             background: #333;
@@ -290,7 +296,7 @@
         .card-slot {
             position: absolute;
             bottom: 250px;
-            right: 50px;
+            right: 250px;
             width: 80px;
             height: 30px;
             background: #333;
@@ -305,7 +311,7 @@
         .receipt-slot {
             position: absolute;
             bottom: 200px;
-            right: 50px;
+            right: 250px;
             width: 80px;
             height: 30px;
             background: #333;
@@ -414,6 +420,11 @@
             .keypad button {
                 font-size: 0.8rem;
             }
+
+            .calculator-home-button {
+                top: calc(40vh + 10px);
+                left: 10vw;
+            }
         }
 
         @media (max-width: 480px) {
@@ -441,6 +452,15 @@
             .keypad button {
                 font-size: 0.7rem;
             }
+
+            .calculator-home-button {
+                top: calc(40vh + 10px);
+                left: 5vw;
+            }
+        }
+
+        .intro-paragraph {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -453,46 +473,49 @@
             </div>
             <div class="screen-content story-screen" id="story-screen">
                 <div class="story-image" data-index="0">
-                    <img src="assets/PlanePeek.png" alt="Arriving in Auckland">
-                    <div class="narration-box">Landing in Auckland, I felt the weight of a new beginning. ASB’s app helped me set up my first account, giving me a sense of control.</div>
+                    <img src="assets/PlanePeek.png" alt="Arriving in Auckland...">
+                    <div class="narration-box">The plane touched down in Auckland, and my heart raced with a mix of fear and hope.</div>
                 </div>
                 <div class="story-image" data-index="1">
-                    <img src="assets/AuckTower.jpg" alt="ASB branch">
-                    <div class="narration-box">In New Plymouth, opening my ASB account felt like planting roots in a foreign land—secure and welcoming.</div>
+                    <img src="assets/AuckTower.jpg" alt="Auckland Tower">
+                    <div class="narration-box">Day one in Auckland, I stood beneath the towering skyline, my suitcase heavy with dreams. I’d left my family, my home—everything familiar. Yet, with every step, I felt a spark of possibility ignite within me.</div>
                 </div>
                 <div class="story-image" data-index="2">
-                    <img src="assets/egmount.jpg" alt="Gardening job">
-                    <div class="narration-box">Two months later, I landed my first job as a gardener. The smell of fresh earth and the pride of earning my first dollar were unforgettable.</div>
+                    <img src="assets/egmount.jpg" alt="Egmount">
+                    <div class="narration-box">In New Plymouth, Mt. Taranaki loomed like a quiet guardian. The crisp air filled my lungs as I took my first steps toward a future I could call my own.</div>
                 </div>
                 <div class="story-image" data-index="3">
-                    <img src="assets/School.jpg" alt="Depositing money">
-                    <div class="narration-box">Depositing that first dollar into my ASB account felt like a milestone—ASB made it easy and secure, marking the start of my financial journey.</div>
+                    <img src="assets/School.jpg" alt="school">
+                    <div class="narration-box">Walking through the gates of New Plymouth Boys High School, I felt like an outsider with a fire inside. Every class, every note scribbled, was a step toward proving I could build a life here.</div>
                 </div>
                 <div class="story-image" data-index="4">
-                    <img src="assets/store.jpg" alt="Tutoring job">
-                    <div class="narration-box">I then got a job as a tutor at NumberWorks’nWords, working double shifts to save money for my future.</div>
+                    <img src="assets/store.jpg" alt="ASB Bank">
+                    <div class="narration-box">Stepping into ASB’s branch, I opened my account with trembling hands. It wasn’t just a bank card—it was a promise to myself that I’d carve out a place in this new land.</div>
                 </div>
                 <div class="story-image" data-index="5">
-                    <img src="assets/Phone.jpg" alt="Budgeting with ASB app">
-                    <div class="narration-box">Managing my earnings was a challenge, but ASB’s budgeting tools helped me save wisely, keeping my goals in sight. Press to hear my victory tune!</div>
+                    <img src="assets/tutoring.jpg" alt="Tutoring job">
+                    <div class="narration-box">At NumberWorks’nWords, I found my rhythm as a tutor, pouring my heart into every lesson. Double shifts left me exhausted, but every dollar saved whispered of a brighter future.</div>
                 </div>
                 <div class="story-image" data-index="6">
-                    <img src="assets/rocky-shore-full-moon.jpg" alt="Receiving money from family">
-                    <div class="narration-box">ASB ensured I received money safely from my family back home. Thanks to their secure transfers, I felt supported despite the distance.</div>
+                    <img src="assets/salary.jpg" alt="First Salary">
+                    <div class="narration-box">Depositing my first $20 at ASB, tears stung my eyes. That crisp note wasn’t just money—it was pride, proof that my hard work was real. I felt unstoppable.</div>
                 </div>
                 <div class="story-image" data-index="7">
-                    <img src="assets/Prom.jpg" alt="University dorm room">
-                    <div class="narration-box">At uni in Auckland, financial problems hit hard. The ASB app showed me where I was overspending, helping me stay on track.</div>
-                    <button class="audio-toggle" onclick="toggleAudio()" aria-label="Toggle success music">Play Music</button>
+                    <img src="assets/Phone.jpg" alt="Phone call about money">
+                    <div class="narration-box">Later on June 25th...My phone lit up with a birthday surprise—money from my family back home, safely in my ASB account. Their love crossed oceans, and ASB made sure it reached me, warming my heart.</div>
                 </div>
                 <div class="story-image" data-index="8">
-                    <img src="assets/Uni.jpg" alt="Studying at uni">
-                    <div class="narration-box">Balancing studies, a student loan, and living costs was tough, but ASB’s tools supported me through every step of the journey.</div>
+                    <img src="assets/Prom.jpg" alt="University dorm room">
+                    <div class="narration-box">With my savings, I bought a ticket to the ball night. Twirling under the lights, I felt alive, like I belonged. That night, I wasn’t just a student—I was Maahir, dreaming big.</div>
+                    <button class="audio-toggle" onclick="toggleAudio()" aria-label="Toggle success music">Play Music</button>
                 </div>
                 <div class="story-image" data-index="9">
+                    <img src="assets/Uni.jpg" alt="Studying at uni">
+                    <div class="narration-box">Uni in Auckland tested me—late nights, mounting bills, and a student loan weighing heavy. But ASB’s app was my lifeline, showing me where to cut back, helping me fight to stay afloat.</div>
+                </div>
+                <div class="story-image" data-index="10">
                     <img src="assets/walkIntoCom.jpg" alt="Walking into ASB office">
-                    <div class="narration-box">Now, the chance has come—my interview at ASB! Whether I get in or not, ASB will always be a huge support and part of my life.</div>
-                    <button class="hired-button" onclick="showReceipt()">Hired?</button>
+                    <div class="narration-box">Today, I walk into ASB for my interview, my heart pounding with gratitude. Win or lose, ASB’s been my rock—part of every tear, every triumph. This is my chance to give back.</div>
                 </div>
                 <button class="next-button" onclick="nextImage()">Next</button>
                 <button class="back-button" onclick="prevImage()">Back</button>
@@ -504,7 +527,7 @@
             <div class="screen-content calculator-screen" id="calculator-screen">
                 <div class="savings-optimizer">
                     <h3>Custom Savings Algorithm</h3>
-                    <p>I created my own algorithm to optimize spending based on my earnings to save at least $100. Check it out!</p>
+                    <p class="intro-paragraph">In my early days, I crafted an expense algorithm inspired by the old-school Envelope System, a simple yet powerful way to track and optimize spending. It helped me strategize every dollar, turning my dreams into plans. The algorithm optimizes spending based on my earnings to save at least $100, trying to save money for my ball night.  Below is a demo of how it works, Check it out!</p>
                     <label for="earnings">Total Earnings ($):</label>
                     <input type="number" id="earnings" placeholder="1000" min="0" required>
                     <br>
@@ -512,13 +535,12 @@
                     <div id="result"></div>
                     <canvas id="spendingChart"></canvas>
                 </div>
-                <button class="home-button" onclick="showScreen('home-screen')">Home</button>
+                <button class="home-button calculator-home-button" onclick="showScreen('home-screen')">Home</button>
             </div>
         </div>
         <div class="atm-buttons">
             <button class="atm-button" onclick="showScreen('story-screen')">Story of Maahir</button>
             <button class="atm-button" onclick="showScreen('calculator-screen')">Expense Calculator</button>
-            <button class="atm-button" disabled>Coming Soon</button>
         </div>
         <div class="cash-slot">CASH</div>
         <div class="card-slot">CARD</div>
