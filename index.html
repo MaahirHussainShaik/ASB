@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maahir's Journey with ASB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Bangers', cursive;
+            background-color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .atm-wrapper {
+            width: 700px;
+            height: 700px;
+            background: linear-gradient(135deg, #666, #444);
+            border: 10px solid #333;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .atm-screen {
+            width: 400px;
+            height: 300px;
+            background: #000;
+            border: 5px solid #333;
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            overflow: hidden;
+        }
+
+        .skyline {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-image: url('skyline.png');
+            background-repeat: repeat-x;
+            background-size: auto 100%;
+            opacity: 0.2;
+        }
+
+        .screen-content {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            color: white;
+            display: none;
+        }
+
+        .screen-content.active {
+            display: flex;
+        }
+
+        .home-screen {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .start-title {
+            font-size: 2rem;
+            color: #FFBF00;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .atm-buttons {
+            position: absolute;
+            right: 50px;
+            top: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .atm-button {
+            background: linear-gradient(135deg, #FFBF00, #e6ac00);
+            color: #000;
+            padding: 8px 12px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            font-family: 'Bangers', cursive;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 150px;
+            text-align: center;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s, background 0.3s;
+        }
+
+        .atm-button:hover {
+            background: linear-gradient(135deg, #e6ac00, #d99b00);
+        }
+
+        .atm-button:active {
+            transform: scale(0.95);
+        }
+
+        .story-screen {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .story-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .story-image.active {
+            display: block;
+        }
+
+        .narration-box {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #fff;
+            color: #000;
+            padding: 0.5rem 0.8rem;
+            border: 2px solid #000;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            max-width: 40%;
+            min-width: 150px;
+            max-height: 25%;
+            overflow-y: auto;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+        }
+
+        .audio-toggle {
+            background: #FFBF00;
+            color: #000;
+            padding: 8px 12px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            font-family: 'Bangers', cursive;
+            cursor: pointer;
+            position: absolute;
+            bottom: 10px;
+            right: 150px;
+            z-index: 3;
+            font-size: 0.9rem;
+        }
+
+        .audio-toggle:hover {
+            background-color: #e6ac00;
+        }
+
+        .next-button, .back-button, .home-button, .hired-button {
+            background: linear-gradient(135deg, #FFBF00, #e6ac00);
+            color: #000;
+            padding: 8px 12px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            font-family: 'Bangers', cursive;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s, background 0.3s;
+        }
+
+        .next-button:hover, .back-button:hover, .home-button:hover, .hired-button:hover {
+            background: linear-gradient(135deg, #e6ac00, #d99b00);
+        }
+
+        .next-button:active, .back-button:active, .home-button:active, .hired-button:active {
+            transform: scale(0.95);
+        }
+
+        .next-button {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .hired-button {
+            position: absolute;
+            bottom: 10px;
+            left: 150px;
+        }
+
+        .calculator-screen {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .savings-optimizer {
+            background: #fff;
+            color: #000;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 90%;
+            border: 2px solid #000;
+            font-size: 0.9rem;
+        }
+
+        .savings-optimizer h3 {
+            color: #FFBF00;
+            font-size: 1.2rem;
+        }
+
+        .savings-optimizer label {
+            font-size: 0.9rem;
+            margin-right: 5px;
+        }
+
+        .savings-optimizer input {
+            padding: 4px;
+            margin: 5px 0;
+            border: 1px solid #000;
+            border-radius: 3px;
+            width: 80px;
+            font-size: 0.9rem;
+        }
+
+        .savings-optimizer button {
+            background: #FFBF00;
+            color: #000;
+            padding: 6px 10px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            font-family: 'Bangers', cursive;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .savings-optimizer button:hover {
+            background-color: #e6ac00;
+        }
+
+        #spendingChart {
+            max-width: 90%;
+            max-height: 150px;
+        }
+
+        /* ATM Frame Elements */
+        .cash-slot {
+            position: absolute;
+            bottom: 170px;
+            right: 50px;
+            width: 100px;
+            height: 20px;
+            background: #333;
+            border: 2px solid #000;
+            border-radius: 5px;
+            text-align: center;
+            color: #fff;
+            font-size: 0.8rem;
+            line-height: 20px;
+        }
+
+        .card-slot {
+            position: absolute;
+            bottom: 250px;
+            right: 50px;
+            width: 80px;
+            height: 30px;
+            background: #333;
+            border: 2px solid #000;
+            border-radius: 5px;
+            text-align: center;
+            color: #fff;
+            font-size: 0.8rem;
+            line-height: 30px;
+        }
+
+        .receipt-slot {
+            position: absolute;
+            bottom: 200px;
+            right: 50px;
+            width: 80px;
+            height: 30px;
+            background: #333;
+            border: 2px solid #000;
+            border-radius: 5px;
+            text-align: center;
+            color: #fff;
+            font-size: 0.8rem;
+            line-height: 30px;
+        }
+
+        .keypad {
+            position: absolute;
+            bottom: 150px;
+            left: 70px;
+            width: 150px;
+            height: 150px;
+            background: #444;
+            border: 2px solid #000;
+            border-radius: 5px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+
+        .keypad button {
+            background: #666;
+            border: 1px solid #000;
+            color: #fff;
+            font-size: 0.9rem;
+            cursor: default;
+        }
+
+        .keypad .special-key {
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            color: #fff;
+        }
+
+        .keypad .clear-key {
+            background: linear-gradient(135deg, #ffff44, #cccc00);
+            color: #000;
+        }
+
+        .keypad .enter-key {
+            background: linear-gradient(135deg, #44ff44, #00cc00);
+            color: #000;
+            grid-column: 2 / 4;
+        }
+
+        .receipt {
+            display: none;
+            position: absolute;
+            bottom: 200px;
+            right: 50px;
+            width: 80px;
+            background: #fff;
+            color: #000;
+            padding: 10px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            text-align: center;
+            z-index: 3;
+        }
+
+        .receipt.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .atm-wrapper {
+                width: 80vw;
+                height: 60vh;
+            }
+
+            .atm-screen {
+                width: 60vw;
+                height: 40vh;
+            }
+
+            .start-title {
+                font-size: 1.5rem;
+            }
+
+            .narration-box {
+                font-size: 0.7rem;
+                max-width: 50%;
+                min-width: 100px;
+            }
+
+            .atm-button {
+                width: 120px;
+                font-size: 0.8rem;
+                padding: 6px;
+            }
+
+            .cash-slot, .card-slot, .receipt-slot {
+                font-size: 0.7rem;
+            }
+
+            .keypad {
+                width: 120px;
+                height: 120px;
+            }
+
+            .keypad button {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .start-title {
+                font-size: 1.2rem;
+            }
+
+            .narration-box {
+                font-size: 0.6rem;
+                max-width: 60%;
+                min-width: 80px;
+            }
+
+            .atm-button {
+                width: 100px;
+                font-size: 0.7rem;
+                padding: 4px;
+            }
+
+            .keypad {
+                width: 100px;
+                height: 100px;
+            }
+
+            .keypad button {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="atm-wrapper">
+        <div class="atm-screen">
+            <div class="skyline"></div>
+            <div class="screen-content home-screen active" id="home-screen">
+                <div class="start-title">Maahir's Journey with ASB</div>
+            </div>
+            <div class="screen-content story-screen" id="story-screen">
+                <div class="story-image" data-index="0">
+                    <img src="assets/new-arrival.jpg" alt="Arriving in Auckland">
+                    <div class="narration-box">Landing in Auckland, I felt the weight of a new beginning. ASB’s app helped me set up my first account, giving me a sense of control.</div>
+                </div>
+                <div class="story-image" data-index="1">
+                    <img src="assets/asb-branch.jpg" alt="ASB branch">
+                    <div class="narration-box">In New Plymouth, opening my ASB account felt like planting roots in a foreign land—secure and welcoming.</div>
+                </div>
+                <div class="story-image" data-index="2">
+                    <img src="assets/gardening.jpg" alt="Gardening job">
+                    <div class="narration-box">Two months later, I landed my first job as a gardener. The smell of fresh earth and the pride of earning my first dollar were unforgettable.</div>
+                </div>
+                <div class="story-image" data-index="3">
+                    <img src="assets/deposit.jpg" alt="Depositing money">
+                    <div class="narration-box">Depositing that first dollar into my ASB account felt like a milestone—ASB made it easy and secure, marking the start of my financial journey.</div>
+                </div>
+                <div class="story-image" data-index="4">
+                    <img src="assets/tutoring.jpg" alt="Tutoring job">
+                    <div class="narration-box">I then got a job as a tutor at NumberWorks’nWords, working double shifts to save money for my future.</div>
+                </div>
+                <div class="story-image" data-index="5">
+                    <img src="assets/budgeting.jpg" alt="Budgeting with ASB app">
+                    <div class="narration-box">Managing my earnings was a challenge, but ASB’s budgeting tools helped me save wisely, keeping my goals in sight. Press to hear my victory tune!</div>
+                    <button class="audio-toggle" onclick="toggleAudio()" aria-label="Toggle success music">Play Music</button>
+                </div>
+                <div class="story-image" data-index="6">
+                    <img src="assets/family-transfer.jpg" alt="Receiving money from family">
+                    <div class="narration-box">ASB ensured I received money safely from my family back home. Thanks to their secure transfers, I felt supported despite the distance.</div>
+                </div>
+                <div class="story-image" data-index="7">
+                    <img src="assets/uni-room.jpg" alt="University dorm room">
+                    <div class="narration-box">At uni in Auckland, financial problems hit hard. The ASB app showed me where I was overspending, helping me stay on track.</div>
+                </div>
+                <div class="story-image" data-index="8">
+                    <img src="assets/studying.jpg" alt="Studying at uni">
+                    <div class="narration-box">Balancing studies, a student loan, and living costs was tough, but ASB’s tools supported me through every step of the journey.</div>
+                </div>
+                <div class="story-image" data-index="9">
+                    <img src="assets/asb-office.jpg" alt="Walking into ASB office">
+                    <div class="narration-box">Now, the chance has come—my interview at ASB! Whether I get in or not, ASB will always be a huge support and part of my life.</div>
+                    <button class="hired-button" onclick="showReceipt()">Hired?</button>
+                </div>
+                <button class="next-button" onclick="nextImage()">Next</button>
+                <button class="back-button" onclick="prevImage()">Back</button>
+                <button class="home-button" onclick="showScreen('home-screen')">Home</button>
+                <div class="receipt" id="receipt">
+                    Congrats! You have hired the best asset for ASB, Maahir!<br>Date: 09:01 PM NZST, June 21, 2025
+                </div>
+            </div>
+            <div class="screen-content calculator-screen" id="calculator-screen">
+                <div class="savings-optimizer">
+                    <h3>Custom Savings Algorithm</h3>
+                    <p>I created my own algorithm to optimize spending based on my earnings to save at least $100. Check it out!</p>
+                    <label for="earnings">Total Earnings ($):</label>
+                    <input type="number" id="earnings" placeholder="1000" min="0" required>
+                    <br>
+                    <button onclick="optimizeSavings()">Optimize Spending</button>
+                    <div id="result"></div>
+                    <canvas id="spendingChart"></canvas>
+                </div>
+                <button class="home-button" onclick="showScreen('home-screen')">Home</button>
+            </div>
+        </div>
+        <div class="atm-buttons">
+            <button class="atm-button" onclick="showScreen('story-screen')">Story of Maahir</button>
+            <button class="atm-button" onclick="showScreen('calculator-screen')">Expense Calculator</button>
+            <button class="atm-button" disabled>Coming Soon</button>
+        </div>
+        <div class="cash-slot">CASH</div>
+        <div class="card-slot">CARD</div>
+        <div class="receipt-slot">RECEIPT</div>
+        <div class="keypad">
+            <button>1</button><button>2</button><button>3</button>
+            <button>4</button><button>5</button><button>6</button>
+            <button>7</button><button>8</button><button>9</button>
+            <button>*</button><button>0</button><button>#</button>
+            <button class="special-key">CANCEL</button>
+            <button class="clear-key">CLEAR</button>
+            <button class="enter-key">ENTER</button>
+        </div>
+    </div>
+
+    <audio id="success-music" loop>
+        <source src="assets/uplifting-music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Initial animations for home screen
+        gsap.fromTo('.start-title', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.5, ease: 'power3.out', delay: 0.5 });
+        gsap.to('.skyline', { opacity: 0.2, duration: 2, delay: 1 });
+        gsap.from('.atm-button', { opacity: 0, x: 30, duration: 1, stagger: 0.2, delay: 1.5 });
+
+        let currentImageIndex = 0;
+        const storyImages = document.querySelectorAll('.story-image');
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen-content').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            const targetScreen = document.getElementById(screenId);
+            targetScreen.classList.add('active');
+
+            if (screenId === 'story-screen') {
+                currentImageIndex = 0;
+                updateStoryImage();
+            }
+
+            gsap.from(targetScreen, { opacity: 0, duration: 0.5, ease: 'power2.out' });
+        }
+
+        function updateStoryImage() {
+            storyImages.forEach((img, index) => {
+                img.classList.toggle('active', index === currentImageIndex);
+            });
+
+            const activeImage = storyImages[currentImageIndex];
+            const narrationBox = activeImage.querySelector('.narration-box');
+            const audioToggle = activeImage.querySelector('.audio-toggle');
+            const receipt = document.getElementById('receipt');
+
+            gsap.from(activeImage.querySelector('img'), { opacity: 0, x: 50, duration: 0.8, ease: 'power2.out' });
+            if (narrationBox) {
+                gsap.from(narrationBox, { opacity: 0, y: 30, scale: 0.8, rotation: 5, duration: 0.8, ease: 'back.out(1.7)' });
+            }
+            if (audioToggle) {
+                gsap.from(audioToggle, { opacity: 0, y: 10, duration: 0.6, ease: 'power2.out', delay: 0.3 });
+            }
+            if (receipt) {
+                receipt.style.display = 'none'; // Ensure receipt is hidden initially
+                receipt.classList.remove('active');
+            }
+        }
+
+        function nextImage() {
+            if (currentImageIndex < storyImages.length - 1) {
+                currentImageIndex++;
+                updateStoryImage();
+            }
+        }
+
+        function prevImage() {
+            if (currentImageIndex > 0) {
+                currentImageIndex--;
+                updateStoryImage();
+            }
+        }
+
+        function showReceipt() {
+            const receipt = document.getElementById('receipt');
+            if (!receipt.classList.contains('active')) {
+                receipt.classList.add('active');
+                gsap.fromTo(receipt, { y: 100, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' });
+            }
+        }
+
+        function toggleAudio() {
+            const audio = document.getElementById('success-music');
+            const button = document.querySelector('.audio-toggle');
+            try {
+                if (audio.paused) {
+                    audio.play().catch(err => console.error('Audio play failed:', err));
+                    button.textContent = 'Pause Music';
+                    button.setAttribute('aria-label', 'Pause success music');
+                } else {
+                    audio.pause();
+                    button.textContent = 'Play Music';
+                    button.setAttribute('aria-label', 'Play success music');
+                }
+            } catch (err) {
+                console.error('Audio toggle error:', err);
+            }
+        }
+
+        let spendingChart;
+
+        function optimizeSavings() {
+            const earnings = parseFloat(document.getElementById('earnings').value);
+            const minSavings = 100;
+            const resultElement = document.getElementById('result');
+
+            if (isNaN(earnings) || earnings < 0) {
+                resultElement.innerHTML = "Please enter valid earnings!";
+                return;
+            }
+
+            const categories = [
+                { name: 'Food', basePercent: 0.3 },
+                { name: 'Entertainment', basePercent: 0.2 },
+                { name: 'Friends/Family', basePercent: 0.2 }
+            ];
+            const totalBasePercent = categories.reduce((sum, cat) => sum + cat.basePercent, 0);
+
+            let savings = 0;
+            let totalSpending = 0;
+            let advice = '';
+
+            if (earnings < minSavings) {
+                const shortfall = minSavings - earnings;
+                resultElement.innerHTML = `
+                    <p>Insufficient earnings! You need $${shortfall} more to save $100.</p>
+                    <p>Consider working more to earn extra or cutting unnecessary expenses.</p>
+                `;
+                return;
+            } else if (earnings >= minSavings) {
+                totalSpending = earnings - minSavings;
+                savings = minSavings;
+
+                const remainingPercent = 1 - totalBasePercent;
+                if (remainingPercent > 0) {
+                    const extraSavings = totalSpending * remainingPercent;
+                    savings += extraSavings;
+                    totalSpending -= extraSavings;
+                }
+
+                categories.forEach(cat => {
+                    cat.percent = cat.basePercent;
+                    cat.amount = Math.round(totalSpending * cat.percent);
+                });
+
+                const sumBaseAmounts = categories.reduce((sum, cat) => sum + cat.amount, 0);
+                if (sumBaseAmounts > totalSpending) {
+                    const reductionFactor = totalSpending / sumBaseAmounts;
+                    categories.forEach(cat => {
+                        cat.amount = Math.round(cat.amount * reductionFactor);
+                    });
+                }
+
+                savings = earnings - categories.reduce((sum, cat) => sum + cat.amount, 0);
+
+                if (savings > minSavings) {
+                    advice = `Great! You’re saving $${savings}, exceeding the $100 target by $${savings - minSavings}. Keep it up!`;
+                } else if (savings === minSavings) {
+                    advice = `You’re saving exactly $100. Maintain your current plan!`;
+                }
+
+                if (savings < minSavings) {
+                    const shortfall = minSavings - savings;
+                    advice = `You’re short by $${shortfall} to save $100. Consider cutting spending by $${shortfall} or earning $${shortfall} more.`;
+                    const cutAmount = shortfall / categories.length;
+                    categories.forEach(cat => {
+                        cat.amount = Math.max(0, cat.amount - cutAmount);
+                    });
+                    savings = earnings - categories.reduce((sum, cat) => sum + cat.amount, 0);
+                }
+            }
+
+            resultElement.innerHTML = `
+                <p>Optimized Spending Plan (Saving $${savings.toFixed(2)}):</p>
+                <ul>
+                    ${categories.map(cat => `<li>${cat.name}: $${cat.amount.toFixed(2)}</li>`).join('')}
+                </ul>
+                <p>Total Spending: $${categories.reduce((sum, cat) => sum + cat.amount, 0).toFixed(2)}</p>
+                <p>${advice}</p>
+            `;
+
+            if (spendingChart) spendingChart.destroy();
+            const ctx = document.getElementById('spendingChart').getContext('2d');
+            spendingChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: categories.map(cat => cat.name),
+                    datasets: [{
+                        data: categories.map(cat => cat.amount),
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: { display: true, text: 'Spending Breakdown', color: '#FFBF00' }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
